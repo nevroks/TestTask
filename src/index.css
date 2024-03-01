@@ -127,6 +127,7 @@ legend {
 /*reset agent styles*/
 :root {
     --font-color:black;
+    --light-gray:#949494;
 }
 *{
     font-family: "Anta", sans-serif;
@@ -144,4 +145,7 @@ h1{
 }
 h2{
     font-size: 24px;
+}
+header,footer{
+    padding: 0 calc(50% - 800px);
 }
