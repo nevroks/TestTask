@@ -1,0 +1,11 @@
+.layoutS{
+
+    display: grid;
+    grid-template-rows: 75px 100% 75px;
+    height: -webkit-fill-available;
+}
+.page{
+    padding: 0 calc(50% - 800px);
+    height: -webkit-fill-available;
+    min-height: 100vh;
+}
