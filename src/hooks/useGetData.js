@@ -24,8 +24,14 @@ async function UseGetData({url,body}) {
                 "Content-Type": "application/json",
             },
             body:JSON.stringify(body)
-        }).then(res=>res)
-    return response.json()
+        })
+        if (response.status !== 200){
+           return UseGetData({url,body})
+        }else{
+            return response.json()
+        }
+    // return response.json()
+
 }
 
 export default UseGetData;
