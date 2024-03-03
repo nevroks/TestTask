@@ -128,6 +128,8 @@ legend {
 :root {
     --font-color:black;
     --light-gray:#949494;
+    --accent-color:#293eff;
+    --white-color:white;
 }
 *{
     font-family: "Anta", sans-serif;
@@ -149,3 +151,37 @@ h2{
 header,footer{
     padding: 0 calc(50% - 800px);
 }
+button{
+    transition: all 0.4s;
+    position: relative;
+    padding: 10px;
+    border: 1px solid var(--accent-color);
+}
+button:hover{
+    background-color: #6272fc;
+    transform: scale(110%);
+}
+button:active{
+    bottom: -2px;
+}
+.button-active{
+    background-color: #6272fc;
+}
+input{
+    transition: all 0.4s;
+    padding: 10px 5px;
+    border: var(--accent-color) 1px solid;
+}
+input:hover{
+    transform: scale(105%);
+}
+input:focus{
+    color: var(--white-color);
+    background-color: var(--accent-color);
+}
+input:focus::placeholder{
+    color: var(--white-color);
+}
+
+
+
