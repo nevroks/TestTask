@@ -1,8 +1,8 @@
 import ProductItemList from "./components/productitemlist/ProductItemList.jsx";
 import {Route, Routes} from "react-router-dom";
 import Layout from "./components/layout/Layout.jsx";
-import MainPage from "./pages/mainpage/MainPage.jsx";
-
+import {lazy} from "react";
+const MainPage = lazy(()=>import("./pages/mainpage/MainPage.jsx"))
 
 
 function App() {
@@ -14,7 +14,6 @@ function App() {
                 <Route index element={<MainPage/>}/>
             </Route>
         </Routes>
-      <ProductItemList/>
     </>
   )
 }
