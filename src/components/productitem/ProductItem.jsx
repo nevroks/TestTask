@@ -10,8 +10,7 @@ const ProductItem = ({productId}) => {
     const [product,setProduct]=useState({})
     useEffect(()=>{
         useGetData({url:"https://api.valantis.store:41000/",body}).then(data=>{setProduct(data.result[0])})
-    },[product])
-
+    },[productId])
     return (
         <div className={classes.product_card}>
             <div className={classes.product_card__img}>
