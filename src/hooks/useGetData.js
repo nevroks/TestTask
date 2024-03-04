@@ -1,5 +1,5 @@
 import md5 from "js-md5";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 const getPassword=()=>{
     const today = new Date();
@@ -17,6 +17,7 @@ const getPassword=()=>{
 
 async function UseGetData({url,body}) {
     const password = getPassword()
+    try {
         const response= await fetch(`${url}`,{
             method: "POST",
             headers: {
@@ -25,11 +26,15 @@ async function UseGetData({url,body}) {
             },
             body:JSON.stringify(body)
         })
-        if (response.status !== 200){
-           return UseGetData({url,body})
-        }else{
-            return response.json()
+        if (response.status!==200){
+            throw new Error(`Сервер ответил со статусом ${response.status}`)
         }
+        return response.json()
+    }catch (e){
+        console.log(e)
+        return UseGetData({url,body})
+    }
+
     // return response.json()
 
 }
