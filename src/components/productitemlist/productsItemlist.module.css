@@ -1,0 +1,7 @@
+.ProductsList{
+    display: flex;
+    column-gap: 50px;
+    row-gap: 150px;
+    flex-wrap: wrap;
+    justify-content: center;
+}

@@ -1,4 +1,7 @@
 .footer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background-color: var(--light-gray);
     -webkit-box-shadow: 2px -7px 26px 1px rgba(0, 0, 0, 0.45);
     -moz-box-shadow: 2px -7px 26px 1px rgba(0, 0, 0, 0.45);
