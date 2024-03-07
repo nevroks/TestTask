@@ -8,24 +8,33 @@ import {IoMdSearch} from "react-icons/io";
 
 import useGetData from "../../hooks/useGetData.js";
 import {ProductArrayContext} from "../../providers/ProductArrayProvider.jsx";
+import NavBar from "../../components/navbar/NavBar.jsx";
+import {IoMenu} from "react-icons/io5";
+import {ShopPageContext} from "../../providers/ShopPageProvider.jsx";
 
 
 
 const MainPage = () => {
     const {productsArray,setProductsArray}=useContext(ProductArrayContext)
-    const [currentPage,setCurrentPage]=useState(1)
+    const {currentPage,setCurrentPage}=useContext(ShopPageContext)
+    // Это отвечает за пагинацию в стандартном течении
     const [productsPerPage]=useState(50)
-
-    const [filtered,setFiltered]=useState(false)
-    const [searchQuery,setSearchQuery]=useState('')
-    const [inputValue,setInputValue]=useState('')
     let body = {
         "action": "get_ids",
         "params": {"offset": currentPage, "limit": productsPerPage}}
 
-    const handleSearch =()=>{
-        setSearchQuery(inputValue)
-    }
+    // Это относится к видимости навбара
+    const [active,setActive]=useState(false)
+
+    // Это всё что отвечает за фильтеринг
+    const [filtered,setFiltered]=useState(false)
+    const [searchQuery,setSearchQuery]=useState('')
+    const [inputValue,setInputValue]=useState('')
+    const [isFilteredByPriceOrBrand,setIsFilteredByPriceOrBrand]=useState(false)
+
+    const [arrFilteredByPriceOtBrand,setArrFilteredByPriceOtBrand]=useState([])
+    const [filteredArray,setFilteredArray]=useState([])
+
     useEffect(()=>{
         if (searchQuery.length === 0){
             setFiltered(false)
@@ -34,8 +43,34 @@ const MainPage = () => {
             setFiltered(true)
         }
     },[searchQuery])
+    useEffect(()=>{
+
+        if(isFilteredByPriceOrBrand && filtered){
+            let result=[]
+            let shorterArray = arrFilteredByPriceOtBrand.length < filteredArray.length ? arrFilteredByPriceOtBrand : filteredArray;
+            let longerArray = arrFilteredByPriceOtBrand.length < filteredArray.length ? filteredArray : arrFilteredByPriceOtBrand;
+
+            for (let i=0;i<shorterArray.length;i++){
+                if (longerArray.includes(shorterArray[i])){
+                    result.push(shorterArray[i])
+                }
+            }
+            setProductsArray(result)
+        }
+    },[isFilteredByPriceOrBrand,filtered])
+
+    const handleSearch =()=>{
+        setCurrentPage(1)
+        setSearchQuery(inputValue)
+    }
     return (
         <main className={classes.mainpage}>
+            <div className={classes.mainpage__openBtn}>
+                {!active && <Button onClick={()=>setActive(true)}><IoMenu /></Button>}
+            </div>
+
+
+            <NavBar setArrFilteredByPriceOtBrand={setArrFilteredByPriceOtBrand} setIsFilteredByPriceOrBrand={setIsFilteredByPriceOrBrand} active={active} setActive={setActive}/>
             <div className={classes.mainpage__options}>
                 <div className={classes.mainpage__pagination}>
                     {currentPage !== 1 ? <Button onClick={()=>setCurrentPage(prevState => prevState-1)}>Назад</Button> : <></>}
@@ -56,7 +91,7 @@ const MainPage = () => {
 
 
             <h2>Наши продукты</h2>
-            <ProductItemList searchQuery={searchQuery} productsPerPage={productsPerPage} currentPage={currentPage} body={body} filtered={filtered}/>
+            <ProductItemList isFilteredByPriceOrBrand={isFilteredByPriceOrBrand} setFilteredArray={setFilteredArray} searchQuery={searchQuery} productsPerPage={productsPerPage} body={body} filtered={filtered}/>
 
         </main>
     );
