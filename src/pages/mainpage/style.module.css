@@ -4,6 +4,12 @@
     flex-direction: column;
     row-gap: 50px;
     padding-top: 10px;
+    position: relative;
+}
+.mainpage__openBtn{
+    position: absolute;
+    left: -50px;
+    top: 50px;
 }
 .mainpage__pagination{
     display: flex;
