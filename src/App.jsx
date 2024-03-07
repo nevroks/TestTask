@@ -2,6 +2,7 @@ import ProductItemList from "./components/productitemlist/ProductItemList.jsx";
 import {Route, Routes} from "react-router-dom";
 import Layout from "./components/layout/Layout.jsx";
 import {lazy} from "react";
+import ShopPageProvider from "./providers/ShopPageProvider.jsx";
 const MainPage = lazy(()=>import("./pages/mainpage/MainPage.jsx"))
 
 
@@ -11,7 +12,7 @@ function App() {
     <>
         <Routes>
              <Route path="/" element={<Layout/>}>
-                <Route index element={<MainPage/>}/>
+                     <Route index element={<ShopPageProvider><MainPage/></ShopPageProvider>}/>
             </Route>
         </Routes>
     </>
