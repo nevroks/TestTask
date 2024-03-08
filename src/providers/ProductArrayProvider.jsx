@@ -6,8 +6,7 @@ const ProductArrayProvider = ({children}) => {
     const [productsArray,setProductsArray]=useState([])
     return (<ProductArrayContext.Provider value={{productsArray,setProductsArray}}>
             {children}
-    </ProductArrayContext.Provider>
-    );
+    </ProductArrayContext.Provider>);
 };
 
 export default ProductArrayProvider;
