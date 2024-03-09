@@ -5,7 +5,8 @@ export const ShopPageContext=createContext()
 
 const ShopPageProvider = ({children}) => {
     const [currentPage,setCurrentPage]=useState(1)
-    return (<ShopPageContext.Provider value={{currentPage,setCurrentPage}}>
+    const [productsPerPage]=useState(50)
+    return (<ShopPageContext.Provider value={{currentPage,setCurrentPage,productsPerPage}}>
             {children}
         </ShopPageContext.Provider>
     );
