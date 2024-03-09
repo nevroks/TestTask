@@ -17,9 +17,8 @@ import useDebounce from "../../hooks/useDebounce.jsx";
 
 const MainPage = () => {
     const {productsArray,setProductsArray}=useContext(ProductArrayContext)
-    const {currentPage,setCurrentPage}=useContext(ShopPageContext)
+    const {currentPage,setCurrentPage,productsPerPage}=useContext(ShopPageContext)
     // Это отвечает за пагинацию в стандартном течении
-    const [productsPerPage]=useState(50)
 
     // Это относится к видимости навбара
     const [active,setActive]=useState(false)
@@ -36,7 +35,7 @@ const MainPage = () => {
         return  {"action": "get_ids",
             "params": {"offset": currentPage, "limit": productsPerPage}}
     },[currentPage,productsPerPage])
-
+    console.log(productsPerPage)
     useEffect(()=>{
         if (searchQuery.length === 0){
             setFiltered(false)
