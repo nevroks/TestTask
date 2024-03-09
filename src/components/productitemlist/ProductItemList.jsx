@@ -6,7 +6,7 @@ import ProductItem from "../productitem/ProductItem.jsx";
 import {ShopPageContext} from "../../providers/ShopPageProvider.jsx";
 
 
-const ProductItemList = ({body,productsPerPage,filtered,searchQuery}) => {
+const ProductItemList = ({body,productsPerPage,filtered,searchQuery,isFilteredByPriceOrBrand,setFilteredArray}) => {
     const {productsArray,setProductsArray}=useContext(ProductArrayContext)
     const {currentPage}=useContext(ShopPageContext)
 
@@ -26,6 +26,9 @@ const ProductItemList = ({body,productsPerPage,filtered,searchQuery}) => {
         setVisitedPages([...visitedPages,currentPage])
     },[currentPage])
     useEffect(()=>{
+        if (isFilteredByPriceOrBrand){
+            return
+        }
         filtered ?
             useGetData({url:'https://api.valantis.store:41000/',body:filteredBody}).then(data=>setProductsArray(data.result))
             :
@@ -33,11 +36,11 @@ const ProductItemList = ({body,productsPerPage,filtered,searchQuery}) => {
                 useGetData({url:'https://api.valantis.store:41000/',body}).then(data=>setProductsArray([...productsArray,data.result].flat()))
     },[filtered,body,filteredBody])
 
-    // useEffect(()=>{
-    //     if (isFilteredByPriceOrBrand){
-    //         useGetData({url:'https://api.valantis.store:41000/',body:filteredBody}).then(data=>setFilteredArray(data.result))
-    //     }
-    // },[isFilteredByPriceOrBrand])
+    useEffect(()=>{
+        if (isFilteredByPriceOrBrand){
+            useGetData({url:'https://api.valantis.store:41000/',body:filteredBody}).then(data=>setFilteredArray(data.result))
+        }
+    },[isFilteredByPriceOrBrand,filtered,filteredBody])
     return (
         <>
         <div className={classes.ProductsList}>

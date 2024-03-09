@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState} from 'react';
+import React, {useContext, useEffect, useMemo, useState} from 'react';
 import classes from "./style.module.css";
 import Button from "../../components/Ui/button/Button.jsx";
 import Input from "../../components/Ui/input/Input.jsx";
@@ -11,6 +11,7 @@ import {ProductArrayContext} from "../../providers/ProductArrayProvider.jsx";
 import NavBar from "../../components/navbar/NavBar.jsx";
 import {IoMenu} from "react-icons/io5";
 import {ShopPageContext} from "../../providers/ShopPageProvider.jsx";
+import useDebounce from "../../hooks/useDebounce.jsx";
 
 
 
@@ -19,9 +20,6 @@ const MainPage = () => {
     const {currentPage,setCurrentPage}=useContext(ShopPageContext)
     // Это отвечает за пагинацию в стандартном течении
     const [productsPerPage]=useState(50)
-    let body = {
-        "action": "get_ids",
-        "params": {"offset": currentPage, "limit": productsPerPage}}
 
     // Это относится к видимости навбара
     const [active,setActive]=useState(false)
@@ -34,17 +32,26 @@ const MainPage = () => {
 
     const [arrFilteredByPriceOtBrand,setArrFilteredByPriceOtBrand]=useState([])
     const [filteredArray,setFilteredArray]=useState([])
+    const body = useMemo(()=>{
+        return  {"action": "get_ids",
+            "params": {"offset": currentPage, "limit": productsPerPage}}
+    },[currentPage,productsPerPage])
 
     useEffect(()=>{
         if (searchQuery.length === 0){
             setFiltered(false)
-            useGetData({url:'https://api.valantis.store:41000/',body}).then(data=>setProductsArray(data.result))
+            setCurrentPage(1)
+            if (isFilteredByPriceOrBrand){
+                useGetData({url:'https://api.valantis.store:41000/',body}).then(data=>setFilteredArray(data.result))
+            }else{
+                useGetData({url:'https://api.valantis.store:41000/',body}).then(data=>setProductsArray(data.result))
+            }
+
         }else{
             setFiltered(true)
         }
     },[searchQuery])
     useEffect(()=>{
-
         if(isFilteredByPriceOrBrand && filtered){
             let result=[]
             let shorterArray = arrFilteredByPriceOtBrand.length < filteredArray.length ? arrFilteredByPriceOtBrand : filteredArray;
@@ -56,11 +63,12 @@ const MainPage = () => {
                 }
             }
             setProductsArray(result)
+        }else if (isFilteredByPriceOrBrand){
+            setProductsArray(arrFilteredByPriceOtBrand)
         }
-    },[isFilteredByPriceOrBrand,filtered])
+    },[isFilteredByPriceOrBrand,filtered,arrFilteredByPriceOtBrand,filteredArray])
 
     const handleSearch =()=>{
-        setCurrentPage(1)
         setSearchQuery(inputValue)
     }
     return (
@@ -91,7 +99,7 @@ const MainPage = () => {
 
 
             <h2>Наши продукты</h2>
-            <ProductItemList isFilteredByPriceOrBrand={isFilteredByPriceOrBrand} setFilteredArray={setFilteredArray} searchQuery={searchQuery} productsPerPage={productsPerPage} body={body} filtered={filtered}/>
+            <ProductItemList setFilteredArray={setFilteredArray} isFilteredByPriceOrBrand={isFilteredByPriceOrBrand} searchQuery={searchQuery} productsPerPage={productsPerPage} body={body} filtered={filtered}/>
 
         </main>
     );
