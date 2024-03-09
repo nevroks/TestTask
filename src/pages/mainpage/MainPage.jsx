@@ -35,7 +35,6 @@ const MainPage = () => {
         return  {"action": "get_ids",
             "params": {"offset": currentPage, "limit": productsPerPage}}
     },[currentPage,productsPerPage])
-    console.log(productsPerPage)
     useEffect(()=>{
         if (searchQuery.length === 0){
             setFiltered(false)

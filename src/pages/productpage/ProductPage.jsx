@@ -11,7 +11,6 @@ const ProductPage = () => {
         "action": "get_items",
         "params": {"ids": [`${id}`]}
     }
-    console.log(id)
     useEffect(()=>{
         useGetData({url:"https://api.valantis.store:41000/",body}).then(data=>{setProduct(data.result[0])})
     },[id])
