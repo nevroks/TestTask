@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import useGetData from "../../hooks/useGetData.js";
 import classes from "./productitem.module.css";
 import productImg from './../../assets/productImg.jpg'
+import Button from "../Ui/button/Button.jsx";
+import {Link} from "react-router-dom";
 const ProductItem = ({productId}) => {
     const body={
         "action": "get_items",
@@ -19,6 +21,7 @@ const ProductItem = ({productId}) => {
             <h2>{product.product}</h2>
             <p>{product.price} Рублей</p>
             <p>{product.brand === null ? "Бренд неизвестен" : product.brand}</p>
+            <Button><Link to={`/product/${productId}`}>Подробнее</Link></Button>
         </div>
     );
 };
